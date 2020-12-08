@@ -5,49 +5,59 @@ var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
   queryUrl="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
-  // Once we get a response, create a geoJSON layer containing the features array and add a popup for each marker
-  // then, send the layer to the createMap() function.
+  
+  // create a geoJSON layer containing the features array and add a popup for each marker
+  // then, send the layer to the createMap() function.  
   var earthquakes = L.geoJSON(data.features, {
     pointToLayer: function (feature, latlng) {
-              return L.circleMarker(latlng, feature.coordinates);
-        },
+              return L.circleMarker(latlng);
+        } ,     
+      style: geojsonMarkerOptions,
     onEachFeature : addPopup
   });
 
   createMap(earthquakes);
 });
 
+function geojsonMarkerOptions(feature) {
+    
+  return {
 
-L.circle([45.52, -122.69], {
-  color: "green",
-  fillColor: "green",
-  fillOpacity: 0.75,
-  radius: 500
-}).addTo(myMap);
+    radius: feature.properties.mag * 2,
+    fillColor:GetColor(feature.geometry.coordinates[2]),
+    color: "#000000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  };
+}
 
 // Function that will determine the color of a earthquake based on the depth of earthquake
 function GetColor(depth) {
-  switch (depth) {
-  case depth > 90:
-    return "red";
-   
-  case 70-89:
-    return "#FF3300";
-  
-  case 50-69:
-    return "orange";
-  
-  case 30-49:
-    return "yellow";
-   
-  case 10-29:
-    return "00FF00";
+  console.log(depth);
+
+
+  switch (true) {
+  case depth >= 90:
+    return "#FBAB91"
     break;
-  case -10-9:
-      return "green";
-    
+  case depth >= 70 && depth < 90:
+    return "#FF3300";
+    break;
+  case depth >= 50 && depth < 70:
+    return " #FFE20B";
+    break;
+  case depth >= 30 && depth < 50:
+    return " #F4FF00";
+    break;
+  case depth >= 10 && depth < 30:
+    return "#C0FF02";
+    break;
+  case depth >= -10 && depth < 10:
+      return "#32CC32";
+      break;
   default:
-    return "black";
+    return "white";
     break;
   }
 }
