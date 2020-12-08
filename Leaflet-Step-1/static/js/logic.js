@@ -1,8 +1,5 @@
 // Store our API endpoint inside queryUrl
-var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2020-11-16&endtime=" +
-  "2020-11-17&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
-
-  queryUrl="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+queryUrl="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
   // reference :- https://leafletjs.com/examples/geojson/
 
@@ -12,16 +9,21 @@ d3.json(queryUrl, function(data) {
   // create a geoJSON layer containing the features array and add a popup for each marker
   // then, send the layer to the createMap() function.  
   var earthquakes = L.geoJSON(data.features, {
+    // make the markers circle
     pointToLayer: function (feature, latlng) {
               return L.circleMarker(latlng);
         } ,     
+      // style the markers
       style: geojsonMarkerOptions,
+      // add the popup feature for the points
     onEachFeature : addPopup
   });
 
+  // create the map for earthquakes
   createMap(earthquakes);
 });
 
+// set the marker options 
 function geojsonMarkerOptions(feature) {
     
   return {
@@ -99,7 +101,7 @@ function createMap(earthquakes) {
   };
 
   // Create our map, giving it the outdoorMap and earthquakes layers to display on load
-  var myMap = L.map("map", {
+  var myMap = L.map("mapid", {
     center: [37.09, -95.71],
     zoom: 5,
     layers: [outdoorMap, earthquakes]
@@ -141,4 +143,4 @@ legend.onAdd = function (map) {
 
 }
 
-}
+
