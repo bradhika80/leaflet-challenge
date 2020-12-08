@@ -27,7 +27,7 @@ d3.json(queryUrl, function(data) {
 function geojsonMarkerOptions(feature) {
     
   return {
-
+   // radius of circle = magnitude, color = depth
     radius: feature.properties.mag * 2,
     fillColor:GetColor(feature.geometry.coordinates[2]),
     color: "#000000",
