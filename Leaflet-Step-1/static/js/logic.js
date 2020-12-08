@@ -39,7 +39,7 @@ function geojsonMarkerOptions(feature) {
 
 // Function that will determine the color of a earthquake based on the depth of earthquake
 function GetColor(depth) {
- 
+
   switch (true) {
   case depth >= 90:
     return "#FF3300"
@@ -99,7 +99,7 @@ function createMap(earthquakes) {
   };
 
   // Create our map, giving it the outdoorMap and earthquakes layers to display on load
-  var myMap = L.map("mapid", {
+  var myMap = L.map("map", {
     center: [37.09, -95.71],
     zoom: 5,
     layers: [outdoorMap, earthquakes]
