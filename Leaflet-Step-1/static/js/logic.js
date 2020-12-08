@@ -39,9 +39,7 @@ function geojsonMarkerOptions(feature) {
 
 // Function that will determine the color of a earthquake based on the depth of earthquake
 function GetColor(depth) {
-  console.log(depth);
-
-
+ 
   switch (true) {
   case depth >= 90:
     return "#FF3300"
@@ -124,13 +122,13 @@ legend.onAdd = function (map) {
         labels = [];
 
 
-        div.innerHTML += "<h3>Depth</h3>"
+    div.innerHTML += "<h3>Depth</h3>"
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < depths.length; i++) {
         div.innerHTML +=
             '<i style="background:' + GetColor(depths[i] + 1) + '"></i> ' +
-            depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
+            depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br/>' : '+');
     }
 
     return div;
