@@ -3,6 +3,9 @@ var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
   "2020-11-17&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
 
   queryUrl="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+
+  // reference :- https://leafletjs.com/examples/geojson/
+
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
   
@@ -39,10 +42,10 @@ function GetColor(depth) {
 
   switch (true) {
   case depth >= 90:
-    return "#FBAB91"
+    return "#FF3300"
     break;
   case depth >= 70 && depth < 90:
-    return "#FF3300";
+    return "#FBAB91";
     break;
   case depth >= 50 && depth < 70:
     return " #FFE20B";
@@ -109,7 +112,33 @@ function createMap(earthquakes) {
     collapsed: false
   }).addTo(myMap);
 
+// Set up the legend
+  var legend = L.control({position: 'bottomright'});
 
-  
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        depths = [(-10), 10, 30, 50, 70, 90],
+        labels = [];
+
+
+        div.innerHTML += "<h3>Depth</h3>"
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < depths.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + GetColor(depths[i] + 1) + '"></i> ' +
+            depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+ // Adding legend to the map
+ legend.addTo(myMap);
+
+
+
+}
 
 }
