@@ -1,6 +1,6 @@
 // Store our API endpoint inside queryUrl
 queryUrl="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
-plateUrl = "https://github.com/fraxen/tectonicplates/blob/master/GeoJSON/PB2002_plates.json";
+
 
   // reference :- https://leafletjs.com/examples/geojson/
 
@@ -23,6 +23,21 @@ d3.json(queryUrl, function(data) {
   // create the map for earthquakes
   createMap(earthquakes);
 });
+
+var tectonicLayer = new L.LayerGroup();
+// get the tectonic plates data
+
+  d3.json("static/data/PB2002_plates.json", function(plateData) {
+    // Create a GeoJSON Layer the plateData
+    L.geoJson(plateData, {
+        color: "#DC143C",
+        weight: 2
+    // Add plate data to tetonics Layer
+    }).addTo(tectonicLayer);
+    // Add the layer to the Map
+    tectonicLayer.addTo(myMap);
+  });
+
 
 // set the marker options 
 function geojsonMarkerOptions(feature) {
@@ -106,6 +121,7 @@ function createMap(earthquakes) {
 
   // Create overlay object to hold our overlay layer
   var overlayMaps = {
+    "Tectonic Plates" : tectonicLayer,
     "Earthquakes": earthquakes
   };
 
